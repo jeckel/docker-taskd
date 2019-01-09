@@ -24,7 +24,7 @@ docker run -d \
   --name=taskd \
   -p 53589:53589 \
   -v /srv/taskd:/var/taskd \
-  andir/taskd
+  andir/docker-taskd
 ```
 
 This makes a set of self signed certificates and minimal configuration to
@@ -40,7 +40,7 @@ docker run -d \
   -p 53589:53589 \
   -v /srv/taskd:/var/taskd \
   -h <hostname>
-  andir/taskd
+  andir/docker-taskd
 ```
 
 Where `<hostname>` is the domain how the remote server can be reached.
@@ -74,10 +74,48 @@ docker in interactive mode, simply do.
 ```sh
 docker run -ti --rm \
   -v /srv/taskd:/var/taskd \
-  ogarcia/taskd /bin/sh
+  andir/docker-taskd /bin/sh
 ```
 
 This mounts the permanent data volume `/srv/taskd` into **taskd** data
 directory and gives you a interactive shell to work.
 
 Please note that the `--rm` modifier destroy the docker after shell exit.
+
+## Use your own certificate configuration file with swarm
+
+If you want to customize certificate generation, you can mount your own configuration.
+
+This can really useful when using [configs](https://docs.docker.com/engine/swarm/configs/) in a docker swarm.
+
+First create a `vars` file like:
+```
+BITS=4096
+EXPIRATION_DAYS=365
+ORGANIZATION="My Organization"
+CN=my.organization.com
+COUNTRY=FR
+STATE="FRANCE"
+LOCALITY="Paris"
+```
+
+And then mount it:
+```sh
+docker run -d \
+  --name=taskd \
+  -p 53589:53589 \
+  -v /srv/taskd:/var/taskd \
+  -v ./vars:/var/taskd/pki/vars
+  andir/taskd
+```
+
+Or with the docker configs storage: 
+```sh
+docker config create taskd_vars vars
+docker run -d \
+  --name=taskd \
+  -p 53589:53589 \
+  -v /srv/taskd:/var/taskd \
+  --config source=taskd_vars,target=/var/taskd/pki/vars,mode=0440
+  andir/taskd
+```
