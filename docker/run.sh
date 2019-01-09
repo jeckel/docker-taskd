@@ -18,9 +18,13 @@ if ! test -e ${TASKDDATA}/config; then
 
   # Copy tools for certificates generation and generate it
   cp /usr/share/taskd/pki/generate* ${TASKDDATA}/pki
-  cp /usr/share/taskd/pki/vars ${TASKDDATA}/pki
+
   cd ${TASKDDATA}/pki
-  echo "CN=$(hostname -f)" >> ${TASKDDATA}/pki/vars
+  # Do not overwrite vars file if already mounted or injected
+  if ! test -e ${TASKDDATA}/pki/vars; then
+    cp /usr/share/taskd/pki/vars ${TASKDDATA}/pki
+    echo "CN=$(hostname -f)" >> ${TASKDDATA}/pki/vars
+  fi
   ./generate
   cd /
 
