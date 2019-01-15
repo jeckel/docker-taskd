@@ -36,9 +36,11 @@ if ! test -e ${TASKDDATA}/config; then
   taskd config --force server.crl ${TASKDDATA}/pki/server.crl.pem
   taskd config --force ca.cert ${TASKDDATA}/pki/ca.cert.pem
 
-  # And finaly set taskd to listen in default port
+  # And finally set taskd to listen in default port
   taskd config --force server 0.0.0.0:53589
 
+  # Create first user
+  cd /app/taskd && ./createUser.sh
 fi
 
 # Exec CMD or taskd by default if nothing present

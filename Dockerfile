@@ -11,6 +11,9 @@ COPY docker /app/taskd/
 # Set the data location
 ARG TASKDDATA
 ENV TASKDDATA ${TASKDDATA:-/var/taskd}
+ENV TASKD_ORGANIZATION Public
+ENV TASKD_USERNAME Bob
+ENV CLIENT_CERT_PATH /var/taskd/client
 
 # Configure container
 VOLUME ["${TASKDDATA}"]
