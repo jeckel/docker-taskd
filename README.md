@@ -1,4 +1,7 @@
+[![Twitter](https://img.shields.io/badge/Twitter-%40jeckel4-blue.svg)](https://twitter.com/jeckel4) [![LinkedIn](https://img.shields.io/badge/LinkedIn-Julien%20Mercier-blue.svg)](https://www.linkedin.com/in/jeckel/)
 # Taskwarrior Server (taskd) Docker
+
+*Forked from [8sd/docker-taskd](https://github.com/8sd/docker-taskd)
 
 (c) 2015-2016 Óscar García Amor
 Redistribution, modifications and pull requests are welcomed under the terms
@@ -81,6 +84,13 @@ This mounts the permanent data volume `/srv/taskd` into **taskd** data
 directory and gives you a interactive shell to work.
 
 Please note that the `--rm` modifier destroy the docker after shell exit.
+
+## Env variables
+
+- `TASKDDATA` : (mounted) folder where taskwarrior data will be stored
+- `CLIENT_CERT_PATH` : (mounted) folder where client certificate and credentials will be stored
+- `TASKD_ORGANIZATION` : Default organisation when creating new user
+- `TASKD_USERNAME` : User name for the first user
 
 ## Use your own certificate configuration file with swarm
 
